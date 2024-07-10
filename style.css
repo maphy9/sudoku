@@ -1,0 +1,57 @@
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+body, html {
+	display: flex;
+	height: 100vh;
+	width: 100vw;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 100%;
+}
+
+.field {
+	width: 50px;
+	height: 50px;
+	border: 1px solid black;
+	padding: 10px;
+	text-align: center;
+}
+
+#table {
+	padding: 10px;
+	display: grid;
+	grid-template-columns: repeat(9, 1fr);
+	grid-template-rows: repeat(9, 1fr);
+	grid-column-gap: 2px;
+	grid-row-gap: 2px; 
+}
+
+.btn {
+	padding: 10px 40px;
+	text-align: center;
+	background: purple;
+	color: white;
+	cursor: pointer;
+}
+
+#error {
+	margin-top: 20px;
+	color: red;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+input[type=number]{
+	-moz-appearance: textfield;
+}
