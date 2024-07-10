@@ -1,5 +1,33 @@
 'use strict';
 
+const table = document.getElementById('table');
+for (let i = 0; i < 81; i++) {
+	table.innerHTML += `<input type="text" placeholder="0" class="field"></input>`;
+}
+const fields = Array.from(document.getElementsByClassName('field'));
+const submit = document.getElementById('submit');
+const clear = document.getElementById('clear');
+const err = document.getElementById('error');
+
+const fillTable = (matrix) => {
+	for (let i = 0; i < 9; i++) {
+		for (let j = 0; j < 9; j++) {
+			const field = fields[i * 9 + j];
+			const value = matrix[i][j] == 0 ? '' : matrix[i][j];
+			field.value = value;
+		}
+	}
+}
+
+const clearTable = () => {
+	for (let i = 0; i < 9; i++) {
+		for (let j = 0; j < 9; j++) {
+			const field = fields[i * 9 + j];
+			field.value = '';
+		}
+	}
+}
+
 const validateMatrix = (matrix) => {
 	if (matrix.length != 9) {
 		return false;
@@ -14,6 +42,20 @@ const validateMatrix = (matrix) => {
 			}
 		}
 	}
+
+	for (let i = 0; i < 9; i++) {
+		if (!checkCol(matrix, i) || !checkRow(matrix, i)) {
+			return false;
+		}
+	}
+	for (let i = 0; i < 9; i++) {
+		const y = 3 * Math.floor(i / 3);
+		const x = 3 * (i % 3);
+		if (!checkGrid(matrix, x, y)) {
+			return false;
+		}
+	}
+
 	return true;
 }
 
@@ -84,6 +126,7 @@ const isValidSudoku = (matrix, x, y) => {
 }
 
 const pickNumber = (matrix, x, y) => {
+	fillTable(matrix);
 	for (let i = matrix[y][x] + 1; i <= 9; i++) {
 		matrix[y][x] = i;
 		if (isValidSudoku(matrix, x, y)) {
@@ -116,34 +159,6 @@ const solveSudoku = (matrix) => {
 	return pickNumber(matrix, x, y);
 }
 
-
-const table = document.getElementById('table');
-for (let i = 0; i < 81; i++) {
-	table.innerHTML += `<input type="text" placeholder="0" class="field"></input>`;
-}
-const fields = Array.from(document.getElementsByClassName('field'));
-const submit = document.getElementById('submit');
-const clear = document.getElementById('clear');
-const err = document.getElementById('error');
-
-const fillTable = (matrix) => {
-	for (let i = 0; i < 9; i++) {
-		for (let j = 0; j < 9; j++) {
-			const field = fields[i * 9 + j];
-			field.value = matrix[i][j];
-		}
-	}
-}
-
-const clearTable = () => {
-	for (let i = 0; i < 9; i++) {
-		for (let j = 0; j < 9; j++) {
-			const field = fields[i * 9 + j];
-			field.value = '';
-		}
-	}
-}
-
 const handleClick = (e) => {
 	e.preventDefault();
 	const matrix = [];
@@ -163,7 +178,6 @@ const handleClick = (e) => {
 		}
 		matrix.push(row);
 	}
-	console.dir({ matrix });
 	if (!validateMatrix(matrix)) {
 		error.innerText = 'Invalid SUDOKU matrix';
 		return;
